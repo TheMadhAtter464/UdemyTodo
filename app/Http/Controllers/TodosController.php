@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Todo;
+use DB;
 
 class TodosController extends Controller
 {
@@ -15,7 +16,7 @@ class TodosController extends Controller
     public function index()
     {
       //  $todos = Todo::all();
-        $todos = Todo::orderBy('created_at', 'desc')->get();
+        $todos = Todo::orderBy('created_at', 'desc')->paginate(3);
         return view ('todos.index')->with('todos', $todos);
     }
 
@@ -27,6 +28,15 @@ class TodosController extends Controller
     public function create()
     {
         return view ('todos.create');
+    }
+
+    /* Search function */
+
+    public function search(Request $request){
+      $search = $request->get('search');
+      //$todos = DB::table('todos')->where('text', 'LIKE', '%'.$search.'%')->paginate(3);
+      $todos = DB::table('todos')->where('text', 'LIKE', '%'.$search.'%')->paginate(5);
+      return view ('todos.index')->with('todos', $todos);
     }
 
     /**

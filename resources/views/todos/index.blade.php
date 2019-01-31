@@ -13,4 +13,5 @@
     </div></a></br>
     @endforeach
   @endif
+  {{ $todos->links() }}
 @endsection
